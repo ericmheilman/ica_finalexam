@@ -56,9 +56,7 @@ func TestUserVaultMsgServerCreateFive(t *testing.T) {
 		_, err := srv.CreateUserVault(wctx, createRequest)
 		require.NoError(t, err)
 		rst, found := k.GetUserVault(ctx,
-			createRequest.Creator,
-			createRequest.RoadOperatorIndex,
-			createRequest.Token,
+			strconv.Itoa(i),
 		)
 		require.True(t, found)
 		require.EqualValues(t, types.UserVault{
@@ -93,7 +91,7 @@ func TestUserVaultMsgServerCreateExists(t *testing.T) {
 func TestUserVaultMsgServerCreateCases(t *testing.T) {
 	creator := "cosmos1jmjfq0tplp9tmx4v9uemw72y4d2wa5nr3xn9d3"
 
-	for _, tc := range []struct {
+	for i, tc := range []struct {
 		desc       string
 		request    *types.MsgCreateUserVault
 		expectBank bool
@@ -144,9 +142,7 @@ func TestUserVaultMsgServerCreateCases(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				rst, found := k.GetUserVault(ctx,
-					tc.request.Creator,
-					tc.request.RoadOperatorIndex,
-					tc.request.Token,
+					strconv.Itoa(i),
 				)
 				require.True(t, found)
 				require.EqualValues(t, types.UserVault{
@@ -304,8 +300,6 @@ func TestUserVaultMsgServerUpdate(t *testing.T) {
 					require.NoError(t, err)
 					rst, found := k.GetUserVault(ctx,
 						createRequest.Creator,
-						createRequest.RoadOperatorIndex,
-						createRequest.Token,
 					)
 					require.True(t, found)
 					require.EqualValues(t, types.UserVault{
@@ -422,8 +416,6 @@ func TestUserVaultMsgServerDelete(t *testing.T) {
 					require.NoError(t, err)
 					_, found := k.GetUserVault(ctx,
 						tc.request.Creator,
-						tc.request.RoadOperatorIndex,
-						tc.request.Token,
 					)
 					require.False(t, found)
 				}
