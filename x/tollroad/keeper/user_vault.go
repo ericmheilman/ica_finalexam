@@ -18,7 +18,9 @@ func (k Keeper) SetUserVault(ctx sdk.Context, userVault types.UserVault) {
 // GetUserVault returns a userVault from its index
 func (k Keeper) GetUserVault(
 	ctx sdk.Context,
-	index string,
+	owner string,
+	roadOperatorIndex string,
+	token string,
 
 ) (val types.UserVault, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.UserVaultKeyPrefix))
