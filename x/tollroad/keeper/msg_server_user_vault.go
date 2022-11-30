@@ -10,7 +10,6 @@ import (
 
 func (k msgServer) CreateUserVault(goCtx context.Context, msg *types.MsgCreateUserVault) (*types.MsgCreateUserVaultResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	// Check if the value already exists
 	_, isFound := k.GetUserVault(
 		ctx,
@@ -28,10 +27,21 @@ func (k msgServer) CreateUserVault(goCtx context.Context, msg *types.MsgCreateUs
 		Balance:           msg.Balance,
 	}
 
+	//balanceStr := strconv.Itoa(int(msg.Balance))
+	//balanceInt, _ := strconv.Atoi(balanceStr)
+
 	k.SetUserVault(
 		ctx,
 		userVault,
 	)
+	creatorAddress, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	err := k.bank.SendCoinsFromAccountToModule(ctx, creatorAddress, types.ModuleName, sdk.NewCoins(sdk.NewCoin(msg.Token, sdk.NewIntFromUint64(msg.Balance))))
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &types.MsgCreateUserVaultResponse{}, nil
 }
 
