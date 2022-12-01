@@ -23,8 +23,9 @@ func TestUserVaultMsgServerCreate(t *testing.T) {
 	owner := "A"
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateUserVault{
-			// Creator: strconv.Itoa(i),
-			Creator:           owner,
+			Creator: owner,
+			//Owner: owner,
+			//Owner:             strconv.Itoa(i),
 			RoadOperatorIndex: strconv.Itoa(i),
 			Token:             strconv.Itoa(i),
 		}
@@ -51,14 +52,14 @@ func TestUserVaultMsgServerUpdate(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgUpdateUserVault{Creator: owner,
-				//	Creator: strconv.Itoa(0),
 				RoadOperatorIndex: strconv.Itoa(0),
 				Token:             strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
-			request: &types.MsgUpdateUserVault{Creator: "B",
+			request: &types.MsgUpdateUserVault{
+				Creator:           "B",
 				RoadOperatorIndex: strconv.Itoa(0),
 				Token:             strconv.Itoa(0),
 			},
@@ -66,7 +67,8 @@ func TestUserVaultMsgServerUpdate(t *testing.T) {
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.MsgUpdateUserVault{Creator: owner,
+			request: &types.MsgUpdateUserVault{
+				Creator:           owner,
 				RoadOperatorIndex: strconv.Itoa(100000),
 				Token:             strconv.Itoa(100000),
 			},
@@ -78,13 +80,11 @@ func TestUserVaultMsgServerUpdate(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateUserVault{Creator: owner,
-				//Owner:             strconv.Itoa(0),
 				RoadOperatorIndex: strconv.Itoa(0),
 				Token:             strconv.Itoa(0),
 			}
 			_, err := srv.CreateUserVault(wctx, expected)
 			require.NoError(t, err)
-
 			_, err = srv.UpdateUserVault(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
@@ -113,15 +113,18 @@ func TestUserVaultMsgServerDelete(t *testing.T) {
 		{
 			desc: "Completed",
 			request: &types.MsgDeleteUserVault{Creator: owner,
-				//	Owner:             strconv.Itoa(0),
+				//Owner: owner,
+				//Owner:             strconv.Itoa(i),
 				RoadOperatorIndex: strconv.Itoa(0),
 				Token:             strconv.Itoa(0),
 			},
 		},
 		{
 			desc: "Unauthorized",
-			request: &types.MsgDeleteUserVault{Creator: "B",
-				//	Owner:             strconv.Itoa(0),
+			request: &types.MsgDeleteUserVault{
+				Creator: "B",
+				//Owner: "B",
+				//Owner:             strconv.Itoa(0),
 				RoadOperatorIndex: strconv.Itoa(0),
 				Token:             strconv.Itoa(0),
 			},
@@ -129,8 +132,10 @@ func TestUserVaultMsgServerDelete(t *testing.T) {
 		},
 		{
 			desc: "KeyNotFound",
-			request: &types.MsgDeleteUserVault{Creator: owner,
-				//	Owner:             strconv.Itoa(100000),
+			request: &types.MsgDeleteUserVault{
+				Creator: owner,
+				//Owner: owner,
+				//Owner:             strconv.Itoa(100000),
 				RoadOperatorIndex: strconv.Itoa(100000),
 				Token:             strconv.Itoa(100000),
 			},
@@ -143,7 +148,8 @@ func TestUserVaultMsgServerDelete(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 
 			_, err := srv.CreateUserVault(wctx, &types.MsgCreateUserVault{Creator: owner,
-				//	Owner:             strconv.Itoa(0),
+				//Owner: owner,
+				//Creator:           strconv.Itoa(0),
 				RoadOperatorIndex: strconv.Itoa(0),
 				Token:             strconv.Itoa(0),
 			})

@@ -5,31 +5,56 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 )
 
 func CmdCreateUserVault() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-user-vault [owner] [road-operator-index] [token] [balance]",
+		Use:   "create-user-vault [road-operator-index] [token] [balance]",
 		Short: "Create a new UserVault",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
-			indexOwner := args[0]
-			indexRoadOperatorIndex := args[1]
-			indexToken := args[2]
-
-			// Get value arguments
-			argBalance, err := cast.ToUint64E(args[3])
-			if err != nil {
-				return err
-			}
-
+			//indexOwner := args[0]
+			indexRoadOperatorIndex := args[0]
+			indexToken := args[1]
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
+
+			argBalance, err := cast.ToUint64E(args[2])
+			if err != nil {
+				return err
+			}
+			//clientCtx.
+
+			//CmdListUserVault()
+			//sdkcli.GetBalancesCmd().Example
+			//sdkcli.GetBalancesCmd(),
+
+			//test := CmdShowUserVault()
+
+			// Get value arguments
+			//clientCtx.GetFromAddress()
+
+			/*
+				argBalance, err := cast.ToUint64E(args[3])
+				if err != nil {
+					return err
+				}
+			*/
+
+			//	out, err = clitestutil.ExecTestCLICmd(ctx, sdkcli.GetBalancesCmd(), moduleBalanceQueryArgs)
+			//client.Account
+
+			//clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+			//client.Account.
 
 			msg := types.NewMsgCreateUserVault(
 
@@ -38,12 +63,15 @@ func CmdCreateUserVault() *cobra.Command {
 					clientCtx.GetFromAddress().String(),
 					indexOwner,
 				*/
-				indexOwner,
+				clientCtx.GetFromAddress().String(),
+				//	indexOwner,
 				//	clientCtx.GetFromAddress().String(),
 
 				indexRoadOperatorIndex,
 				indexToken,
 				argBalance,
+
+			//	k.GetUserVault(ctx,),
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -59,17 +87,17 @@ func CmdCreateUserVault() *cobra.Command {
 
 func CmdUpdateUserVault() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-user-vault [owner] [road-operator-index] [token] [balance]",
+		Use:   "update-user-vault [road-operator-index] [token] [balance]",
 		Short: "Update a UserVault",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
-			indexOwner := args[0]
-			indexRoadOperatorIndex := args[1]
-			indexToken := args[2]
+			//indexOwner := args[0]
+			indexRoadOperatorIndex := args[0]
+			indexToken := args[1]
 
 			// Get value arguments
-			argBalance, err := cast.ToUint64E(args[3])
+			argBalance, err := cast.ToUint64E(args[2])
 			if err != nil {
 				return err
 			}
@@ -85,8 +113,8 @@ func CmdUpdateUserVault() *cobra.Command {
 					clientCtx.GetFromAddress().String(),
 					indexOwner,
 				*/
-				indexOwner,
-				//	clientCtx.GetFromAddress().String(),
+				//	indexOwner,
+				clientCtx.GetFromAddress().String(),
 				indexRoadOperatorIndex,
 				indexToken,
 				argBalance,
@@ -105,13 +133,13 @@ func CmdUpdateUserVault() *cobra.Command {
 
 func CmdDeleteUserVault() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "delete-user-vault [owner] [road-operator-index] [token]",
+		Use:   "delete-user-vault [road-operator-index] [token]",
 		Short: "Delete a UserVault",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			indexOwner := args[0]
-			indexRoadOperatorIndex := args[1]
-			indexToken := args[2]
+			//indexOwner := args[0]
+			indexRoadOperatorIndex := args[0]
+			indexToken := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -124,7 +152,9 @@ func CmdDeleteUserVault() *cobra.Command {
 					clientCtx.GetFromAddress().String(),
 					indexOwner,
 				*/
-				indexOwner,
+				//indexOwner,
+				clientCtx.GetFromAddress().String(),
+
 				//	clientCtx.GetFromAddress().String(),
 				indexRoadOperatorIndex,
 				indexToken,
