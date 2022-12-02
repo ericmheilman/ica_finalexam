@@ -14,6 +14,9 @@ configuration:
     - client/test/integration/one-run.ts
     - client/.env
     - client/environment.d.ts
+    - client/package-lock.json
+    - client/package.json
+    - client/tsconfig.json
     - cmd/toll-roadd/main.go
     - docs/docs.go
     - proto/tollroad/params.proto
