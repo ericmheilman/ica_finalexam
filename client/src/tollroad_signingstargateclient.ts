@@ -70,7 +70,16 @@ export class TollroadSigningStargateClient extends SigningStargateClient {
         fee: StdFee | "auto" | number,
         memo = "",
     ): Promise<DeliverTxResponse> {
-        throw "Not implemented"
+        const createMsg: MsgCreateRoadOperatorEncodeObject = {
+            typeUrl: typeUrlMsgCreateRoadOperator,
+            value: {
+                creator: creator,
+                name: name,
+                token: token,
+                active: active,
+            },
+        }
+        return this.signAndBroadcast(creator, [createMsg], fee, memo)
     }
 
     public async deleteRoadOperator(
@@ -79,7 +88,14 @@ export class TollroadSigningStargateClient extends SigningStargateClient {
         fee: StdFee | "auto" | number,
         memo = "",
     ): Promise<DeliverTxResponse> {
-        throw "Not implemented"
+        const createMsg: MsgDeleteRoadOperatorEncodeObject = {
+            typeUrl: typeUrlMsgDeleteRoadOperator,
+            value: {
+                creator: creator,
+                index: index,
+            },
+        }
+        return this.signAndBroadcast(creator, [createMsg], fee, memo)
     }
 
     public async createUserVault(
@@ -90,7 +106,16 @@ export class TollroadSigningStargateClient extends SigningStargateClient {
         fee: StdFee | "auto" | number,
         memo = "",
     ): Promise<DeliverTxResponse> {
-        throw "Not implemented"
+        const createMsg: MsgCreateUserVaultEncodeObject = {
+            typeUrl: typeUrlMsgCreateUserVault,
+            value: {
+                creator: creator,
+                roadOperatorIndex: roadOperatorIndex,
+                token: token,
+                balance: balance,
+            },
+        }
+        return this.signAndBroadcast(creator, [createMsg], fee, memo)
     }
 
     public async deleteUserVault(
@@ -100,6 +125,14 @@ export class TollroadSigningStargateClient extends SigningStargateClient {
         fee: StdFee | "auto" | number,
         memo = "",
     ): Promise<DeliverTxResponse> {
-        throw "Not implemented"
+        const createMsg: MsgDeleteUserVaultEncodeObject = {
+            typeUrl: typeUrlMsgDeleteUserVault,
+            value: {
+                creator: creator,
+                roadOperatorIndex:roadOperatorIndex,
+                token:token,
+            },
+        }
+        return this.signAndBroadcast(creator, [createMsg], fee, memo)
     }
 }
